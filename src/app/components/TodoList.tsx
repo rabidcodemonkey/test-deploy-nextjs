@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { apiUrl } from '@/lib/config';
 
 interface Todo {
   id: number;
@@ -22,7 +23,7 @@ export default function TodoList() {
   async function fetchTodos() {
     try {
       setError(null);
-      const response = await fetch('/api/todos');
+      const response = await fetch(apiUrl('/api/todos'));
       const data = await response.json();
       
       if (!response.ok) {
@@ -46,7 +47,7 @@ export default function TodoList() {
     if (!title.trim()) return;
 
     try {
-      const response = await fetch('/api/todos', {
+      const response = await fetch(apiUrl('/api/todos'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title }),
@@ -64,7 +65,7 @@ export default function TodoList() {
 
   async function handleToggleTodo(id: number) {
     try {
-      const response = await fetch(`/api/todos/${id}`, {
+      const response = await fetch(apiUrl(`/api/todos/${id}`), {
         method: 'PUT',
       });
 
@@ -79,7 +80,7 @@ export default function TodoList() {
 
   async function handleDeleteTodo(id: number) {
     try {
-      const response = await fetch(`/api/todos/${id}`, {
+      const response = await fetch(apiUrl(`/api/todos/${id}`), {
         method: 'DELETE',
       });
 
@@ -102,7 +103,7 @@ export default function TodoList() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Add a new todo..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
           />
           <button
             type="submit"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { apiUrl } from "@/lib/config";
 
 interface ChatMessage {
   id: string;
@@ -22,7 +23,7 @@ export default function Chat() {
     const connectChat = async () => {
       try {
         // Start subscription to Redis messages
-        const eventSource = new EventSource("/api/chat?action=subscribe");
+        const eventSource = new EventSource(apiUrl("/api/chat?action=subscribe"));
         eventSourceRef.current = eventSource;
 
         eventSource.onopen = () => {
@@ -69,7 +70,7 @@ export default function Chat() {
 
     setLoading(true);
     try {
-      const response = await fetch("/api/chat", {
+      const response = await fetch(apiUrl("/api/chat"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input }),
@@ -129,7 +130,7 @@ export default function Chat() {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type a message..."
             disabled={!connected || loading}
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed text-black"
           />
           <button
             type="submit"
